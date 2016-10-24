@@ -18,9 +18,6 @@ namespace DoublyLinkedList
             list.Add("Mia");
             list.Add("Penelope");
             OutputList();
-
-            Console.WriteLine("");
-            Console.WriteLine(list.Get(2));
         }
 
         private static void OutputList()

@@ -301,7 +301,50 @@ namespace DoublyLinkedList
 
         public void Insert(T data, int index)
         {
-            throw new NotImplementedException();
+            if (index > this.Count)
+            {
+                throw new Exception("Outside bounds of list");
+            }
+
+            if (index == 0)
+            {
+                this.Add(data);
+                return;
+            }
+            if (index == this.Count)
+            {
+                this.Append(data);
+                return;
+            }
+
+            this.recount = true;
+
+            CustomNode<T> node;
+
+            if (index <= this.Count - 1)
+            {
+                node = this.head;
+
+                for (int i = 0; i < index; i++)
+                {
+                    node = node.Next;
+                }
+            }
+            else
+            {
+                node = this.tail;
+
+                for (int i = this.Count - 1; i > index; i--)
+                {
+                    node = node.Prev;
+                }
+            }
+
+            var prev = node.Prev;
+            var newNode = new CustomNode<T>(data, node, prev);
+
+            node.Prev = newNode;
+            prev.Next = newNode;
         }
 
         public void Remove(T data)
