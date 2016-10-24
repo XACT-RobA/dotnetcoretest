@@ -6,6 +6,8 @@ namespace SinglyLinkedList.Interfaces
 {
     public interface ICustomLinkedList<T> : IEnumerable<T>
     {
+        T this[int index] { get; set; }
+
         int Count { get; }
 
         T[] ToArray();

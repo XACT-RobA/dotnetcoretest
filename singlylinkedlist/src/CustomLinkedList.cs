@@ -68,6 +68,43 @@ namespace SinglyLinkedList
             return GetEnumerator();
         }
 
+        public T this[int index]
+        {
+            get
+            {
+                if (index >= this.Count)
+                {
+                    throw new Exception("Outside bounds of list");
+                }
+
+                var node = this.head;
+
+                for (int i = 0; i < index; i++)
+                {
+                    node = node.Next;
+                }
+
+                return node.Data;
+            }
+
+            set
+            {
+                if (index >= this.Count)
+                {
+                    throw new Exception("Outside bounds of list");
+                }
+
+                var node = this.head;
+
+                for (int i = 0; i < index; i++)
+                {
+                    node = node.Next;
+                }
+
+                node.Data = value;
+            }
+        }
+
         public T[] ToArray()
         {
             var array = new T[this.Count];
