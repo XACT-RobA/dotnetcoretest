@@ -18,6 +18,17 @@ namespace DoublyLinkedList
             list.Add("Mia");
             list.Add("Penelope");
             OutputList();
+
+            list.Add("TestHead");
+            list.Add("TestTail");
+            list.Append("TestTail");
+            list.Append("TestHead");
+            OutputList();
+
+            list.Remove("TestTail");
+            list.RemoveAt(0);
+            list.RemoveAt(list.Find("TestHead"));
+            OutputList();
         }
 
         private static void OutputList()

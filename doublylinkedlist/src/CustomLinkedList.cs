@@ -321,7 +321,7 @@ namespace DoublyLinkedList
 
             CustomNode<T> node;
 
-            if (index <= this.Count - 1)
+            if (index <= this.Count/2)
             {
                 node = this.head;
 
@@ -349,17 +349,98 @@ namespace DoublyLinkedList
 
         public void Remove(T data)
         {
-            throw new NotImplementedException();
+            if (this.IsEmpty) return;
+
+            this.recount = true;
+
+            var node = this.head;
+
+            while(node != null)
+            {
+                if (AreEqual(node.Data, data))
+                {
+                    if (node.Prev == null) this.PopHead();
+                    else if (node.Next == null) this.PopTail();
+                    else
+                    {
+                        node.Prev.Next = node.Next;
+                        node.Next.Prev = node.Prev;
+                    }
+                }
+
+                node = node.Next;
+            }
         }
 
         public void RemoveByUID(long uid)
         {
-            throw new NotImplementedException();
+            if (this.IsEmpty) return;
+
+            this.recount = true;
+
+            var node = this.head;
+
+            while(node != null)
+            {
+                if (node.UID.Equals(uid))
+                {
+                    if (node.Prev == null) this.PopHead();
+                    else if (node.Next == null) this.PopTail();
+                    else
+                    {
+                        node.Prev.Next = node.Next;
+                        node.Next.Prev = node.Prev;
+                    }
+                    return;
+                }
+
+                node = node.Next;
+            }
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            if (index >= this.Count)
+            {
+                throw new Exception("Outside bounds of list");
+            }
+
+            this.recount = true;
+
+            if (index == 0)
+            {
+                this.PopHead();
+                return;
+            }
+            else if (index == this.Count-1)
+            {
+                this.PopTail();
+                return;
+            }
+
+            CustomNode<T> node;
+
+            if (index <= this.Count/2)
+            {
+                node = this.head;
+
+                for (int i = 0; i < index; i++)
+                {
+                    node = node.Next;
+                }
+            }
+            else
+            {
+                node = this.tail;
+
+                for (int i = this.Count - 1; i > index; i--)
+                {
+                    node = node.Prev;
+                }
+            }
+
+            node.Prev.Next = node.Next;
+            node.Next.Prev = node.Prev;
         }
 
         public void Reverse()

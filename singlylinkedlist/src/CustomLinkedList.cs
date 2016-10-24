@@ -298,11 +298,18 @@ namespace SinglyLinkedList
 
         public void Remove(T data)
         {
-            if (this.head == null) return;
+            if (this.IsEmpty) return;
 
             this.recount = true;
-
-            if (this.head.Data.Equals(data)) this.head = this.head.Next;
+            
+            while(true)
+            {
+                if (this.AreEqual(head.Data, data))
+                {
+                    this.head = this.head.Next;
+                }
+                else break;
+            }
 
             var node = this.head;
 
@@ -321,7 +328,7 @@ namespace SinglyLinkedList
 
         public void RemoveByUID(long uid)
         {
-            if (this.head == null) return;
+            if (this.IsEmpty) return;
 
             this.recount = true;
 
