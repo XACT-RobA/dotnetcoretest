@@ -22,11 +22,9 @@ namespace SinglyLinkedList
 
         private static void OutputList()
         {
-            var array = list.ToArray();
-
-            for (int i = 0; i < array.Length; i++)
+            foreach(var value in list)
             {
-                Console.WriteLine(array[i].Data + " " + array[i].UID.ToString());
+                Console.WriteLine(value);
             }
 
             Console.WriteLine("");

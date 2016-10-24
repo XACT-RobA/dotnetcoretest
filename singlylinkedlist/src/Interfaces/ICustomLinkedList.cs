@@ -1,18 +1,20 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SinglyLinkedList.Interfaces
 {
-    public interface ICustomLinkedList<T>
+    public interface ICustomLinkedList<T> : IEnumerable<T>
     {
         int Count { get; }
 
-        CustomNode<T>[] ToArray();
+        T[] ToArray();
 
-        T[] GetDataArray();
+        CustomNode<T>[] GetNodeArray();
 
-        CustomNode<T> Get(int index);
+        T Get(int index);
 
-        T GetData(int index);
+        CustomNode<T> GetNode(int index);
 
         void Add(T data);
 

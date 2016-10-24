@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using SinglyLinkedList.Interfaces;
 
 namespace SinglyLinkedList
 {
-    public class CustomLinkedList<T> : ICustomLinkedList<T>
+    public class CustomLinkedList<T> : IEnumerable<T>, ICustomLinkedList<T>
     {
         private CustomNode<T> head;
 
@@ -50,22 +51,24 @@ namespace SinglyLinkedList
             this.count = runningTotal;
         }
 
-        public CustomNode<T>[] ToArray()
+        public IEnumerator<T> GetEnumerator()
         {
-            var array = new CustomNode<T>[this.Count];
-
             var node = this.head;
 
-            for (int i = 0; i < this.Count; i++)
+            while(node != null)
             {
-                array[i] = node;
+                yield return node.Data;
+
                 node = node.Next;
             }
-
-            return array;
         }
 
-        public T[] GetDataArray()
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public T[] ToArray()
         {
             var array = new T[this.Count];
 
@@ -80,7 +83,22 @@ namespace SinglyLinkedList
             return array;
         }
 
-        public CustomNode<T> Get(int index)
+        public CustomNode<T>[] GetNodeArray()
+        {
+            var array = new CustomNode<T>[this.Count];
+
+            var node = this.head;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                array[i] = node;
+                node = node.Next;
+            }
+
+            return array;
+        }
+
+        public CustomNode<T> GetNode(int index)
         {
             if (index >= this.Count)
             {
@@ -97,9 +115,9 @@ namespace SinglyLinkedList
             return node;
         }
 
-        public T GetData(int index)
+        public T Get(int index)
         {
-            return Get(index).Data;
+            return GetNode(index).Data;
         }
         
         public void Add(T data)
