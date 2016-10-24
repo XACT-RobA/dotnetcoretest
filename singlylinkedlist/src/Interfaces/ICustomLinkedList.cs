@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace SinglyLinkedList.Interfaces
@@ -10,6 +8,10 @@ namespace SinglyLinkedList.Interfaces
 
         int Count { get; }
 
+        bool HasNodes { get; }
+
+        bool IsEmpty { get; }
+
         T[] ToArray();
 
         CustomNode<T>[] GetNodeArray();
@@ -17,6 +19,10 @@ namespace SinglyLinkedList.Interfaces
         T Get(int index);
 
         CustomNode<T> GetNode(int index);
+
+        T PopHead();
+
+        T PopTail();
 
         int Find(T data);
 
@@ -33,5 +39,7 @@ namespace SinglyLinkedList.Interfaces
         void RemoveByUID(long uid);
 
         void RemoveAt(int index);
+
+        void Reverse();
     }
 }

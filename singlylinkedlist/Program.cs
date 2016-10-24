@@ -17,9 +17,18 @@ namespace SinglyLinkedList
             list.Add("Alice");
             list.Add("Mia");
             list.Add("Penelope");
+            list.Add("TestHead");
+            list.Append("TestTail");
             OutputList();
 
-            Console.WriteLine(list[list.Find("Mia")]);
+            Console.WriteLine(list.PopHead());
+            Console.WriteLine(list.PopTail());
+            Console.WriteLine("");
+
+            OutputList();
+
+            list.Reverse();
+            OutputList();
         }
 
         private static void OutputList()

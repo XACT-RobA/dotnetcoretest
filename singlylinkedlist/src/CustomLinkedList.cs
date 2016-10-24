@@ -22,6 +22,22 @@ namespace SinglyLinkedList
             }
         }
 
+        public bool HasNodes
+        {
+            get
+            {
+                return !IsEmpty;
+            }
+        }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return head == null;
+            }
+        }
+
         private bool AreEqual(T first, T second)
         {
             if (first == null) return second == null;
@@ -135,6 +151,11 @@ namespace SinglyLinkedList
             return array;
         }
 
+        public T Get(int index)
+        {
+            return GetNode(index).Data;
+        }
+
         public CustomNode<T> GetNode(int index)
         {
             if (index >= this.Count)
@@ -152,9 +173,37 @@ namespace SinglyLinkedList
             return node;
         }
 
-        public T Get(int index)
+        public T PopHead()
         {
-            return GetNode(index).Data;
+            if (this.head == null) return default(T);
+
+            this.recount = true;
+
+            var node = this.head;
+
+            this.head = this.head.Next;
+
+            return node.Data;
+        }
+
+        public T PopTail()
+        {
+            if (this.head == null) return default(T);
+
+            this.recount = true;
+
+            var node = this.head;
+
+            while(node.Next.Next != null)
+            {
+                node = node.Next;
+            }
+
+            var data = node.Next.Data;
+
+            node.Next = null;
+
+            return data;
         }
 
         public int Find(T data)
@@ -331,6 +380,25 @@ namespace SinglyLinkedList
 
                 node = node.Next;
             }
+        }
+
+        public void Reverse()
+        {
+            if (this.IsEmpty) return;
+
+            CustomNode<T> prev = null;
+            var node = this.head;
+            CustomNode<T> next = null;
+
+            while(node != null)
+            {
+                next = node.Next;
+                node.Next = prev;
+                prev = node;
+                node = next;
+            }
+
+            this.head = prev;
         }
     }
 }
