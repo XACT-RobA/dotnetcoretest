@@ -18,6 +18,10 @@ namespace SinglyLinkedList.Interfaces
 
         CustomNode<T> GetNode(int index);
 
+        int Find(T data);
+
+        int[] FindAll(T data);
+
         void Add(T data);
 
         void Append(T data);

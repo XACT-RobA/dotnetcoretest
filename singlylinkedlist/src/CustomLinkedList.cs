@@ -156,6 +156,40 @@ namespace SinglyLinkedList
         {
             return GetNode(index).Data;
         }
+
+        public int Find(T data)
+        {
+            var node = this.head;
+            var counter = 0;
+
+            while(node != null)
+            {
+                if (AreEqual(data, node.Data)) return counter;
+
+                node = node.Next;
+                counter++;
+            }
+
+            return -1;
+        }
+
+        public int[] FindAll(T data)
+        {
+            var list = new List<int>();
+
+            var node = this.head;
+            var counter = 0;
+
+            while(node != null)
+            {
+                if (AreEqual(data, node.Data)) list.Add(counter);
+
+                node = node.Next;
+                counter++;
+            }
+
+            return list.ToArray();
+        }
         
         public void Add(T data)
         {

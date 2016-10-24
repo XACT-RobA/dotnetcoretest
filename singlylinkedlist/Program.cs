@@ -19,8 +19,7 @@ namespace SinglyLinkedList
             list.Add("Penelope");
             OutputList();
 
-            Console.WriteLine(list[0]);
-            Console.WriteLine(list[1]);
+            Console.WriteLine(list[list.Find("Mia")]);
         }
 
         private static void OutputList()
