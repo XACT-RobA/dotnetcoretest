@@ -445,7 +445,23 @@ namespace DoublyLinkedList
 
         public void Reverse()
         {
-            throw new NotImplementedException();
+            if (IsEmpty) return;
+
+            var node = this.head;
+
+            while (node != null)
+            {
+                var next = node.Next;
+
+                node.Next = node.Prev;
+                node.Prev = next;
+
+                node = next;
+            }
+
+            var temp = this.head;
+            this.head = this.tail;
+            this.tail = temp;
         }
     }
 }

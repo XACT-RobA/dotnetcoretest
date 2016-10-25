@@ -29,6 +29,9 @@ namespace DoublyLinkedList
             list.RemoveAt(0);
             list.RemoveAt(list.Find("TestHead"));
             OutputList();
+
+            list.Reverse();
+            OutputList();
         }
 
         private static void OutputList()
