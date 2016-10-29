@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace CircularLinkedList.Interfaces
+namespace DotNetCoreTest.CircularLinkedList.Interfaces
 {
-    public interface ICustomLinkedList<T> : IEnumerable<T>
+    public interface ICircularLinkedList<T> : IEnumerable<T>
     {
         int Count { get; }
 
@@ -12,7 +12,11 @@ namespace CircularLinkedList.Interfaces
 
         T[] ToArray();
 
-        CustomNode<T>[] GetNodeArray();
+        CircularLinkedNode<T>[] GetNodeArray();
+        
+        T Next();
+        
+        T Prev();
 
         T Pop();
 

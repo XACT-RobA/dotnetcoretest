@@ -1,15 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DoublyLinkedList.Interfaces;
+using DotNetCoreTest.SinglyLinkedList.Interfaces;
 
-namespace DoublyLinkedList
+namespace DotNetCoreTest.SinglyLinkedList
 {
-    public class CustomLinkedList<T> : IEnumerable<T>, ICustomLinkedList<T>
+    public class SinglyLinkedList<T> : IEnumerable<T>, ISinglyLinkedList<T>
     {
-        private CustomNode<T> head;
-
-        private CustomNode<T> tail;
+        private SinglyLinkedNode<T> head;
 
         private bool recount;
 
@@ -47,14 +45,14 @@ namespace DoublyLinkedList
             return first.Equals(second);
         }
 
-        public void Recount()
+        private void Recount()
         {
             this.recount = false;
 
             var runningTotal = 0;
             var node = this.head;
 
-            while(node != null)
+            while (node != null)
             {
                 node = node.Next;
                 runningTotal++;
@@ -89,25 +87,11 @@ namespace DoublyLinkedList
                     throw new Exception("Outside bounds of list");
                 }
 
-                CustomNode<T> node;
+                var node = this.head;
 
-                if (index <= this.Count/2)
+                for (int i = 0; i < index; i++)
                 {
-                    node = this.head;
-
-                    for (int i = 0; i < index; i++)
-                    {
-                        node = node.Next;
-                    }
-                }
-                else
-                {
-                    node = this.tail;
-
-                    for (int i = this.Count - 1; i > index; i--)
-                    {
-                        node = node.Prev;
-                    }
+                    node = node.Next;
                 }
 
                 return node.Data;
@@ -120,25 +104,11 @@ namespace DoublyLinkedList
                     throw new Exception("Outside bounds of list");
                 }
 
-                CustomNode<T> node;
+                var node = this.head;
 
-                if (index <= this.Count/2)
+                for (int i = 0; i < index; i++)
                 {
-                    node = this.head;
-
-                    for (int i = 0; i < index; i++)
-                    {
-                        node = node.Next;
-                    }
-                }
-                else
-                {
-                    node = this.tail;
-
-                    for (int i = this.Count - 1; i > index; i--)
-                    {
-                        node = node.Prev;
-                    }
+                    node = node.Next;
                 }
 
                 node.Data = value;
@@ -160,9 +130,9 @@ namespace DoublyLinkedList
             return array;
         }
 
-        public CustomNode<T>[] GetNodeArray()
+        public SinglyLinkedNode<T>[] GetNodeArray()
         {
-            var array = new CustomNode<T>[this.Count];
+            var array = new SinglyLinkedNode<T>[this.Count];
 
             var node = this.head;
 
@@ -180,32 +150,18 @@ namespace DoublyLinkedList
             return GetNode(index).Data;
         }
 
-        public CustomNode<T> GetNode(int index)
+        public SinglyLinkedNode<T> GetNode(int index)
         {
             if (index >= this.Count)
             {
                 throw new Exception("Outside bounds of list");
             }
 
-            CustomNode<T> node;
+            var node = this.head;
 
-            if (index <= this.Count/2)
+            for (int i = 0; i < index; i++)
             {
-                node = this.head;
-
-                for (int i = 0; i < index; i++)
-                {
-                    node = node.Next;
-                }
-            }
-            else
-            {
-                node = this.tail;
-
-                for (int i = this.Count - 1; i > index; i--)
-                {
-                    node = node.Prev;
-                }
+                node = node.Next;
             }
 
             return node;
@@ -221,8 +177,6 @@ namespace DoublyLinkedList
 
             this.head = this.head.Next;
 
-            this.head.Prev = null;
-
             return node.Data;
         }
 
@@ -232,13 +186,18 @@ namespace DoublyLinkedList
 
             this.recount = true;
 
-            var node = this.tail;
+            var node = this.head;
 
-            this.tail = this.tail.Prev;
+            while(node.Next.Next != null)
+            {
+                node = node.Next;
+            }
 
-            this.tail.Next = null;
+            var data = node.Next.Data;
 
-            return node.Data;
+            node.Next = null;
+
+            return data;
         }
 
         public int Find(T data)
@@ -274,15 +233,12 @@ namespace DoublyLinkedList
 
             return list.ToArray();
         }
-
+        
         public void Add(T data)
         {
             this.recount = true;
 
-            var node = new CustomNode<T>(data, this.head, null);
-
-            if (!IsEmpty) this.head.Prev = node;
-            else this.tail = node;
+            var node = new SinglyLinkedNode<T>(data, this.head);
 
             this.head = node;
         }
@@ -291,12 +247,26 @@ namespace DoublyLinkedList
         {
             this.recount = true;
 
-            var node = new CustomNode<T>(data, null, this.tail);
+            var newNode = new SinglyLinkedNode<T>(data, null);
 
-            if (!IsEmpty) this.tail.Next = node;
-            else this.head = node;
+            if (this.head == null)
+            {
+                this.head = newNode;;
+                return;
+            }
 
-            this.tail = node;
+            var node = this.head;
+
+            while(node != null)
+            {
+                if (node.Next == null)
+                {
+                    node.Next = newNode;
+                    return;
+                }
+
+                node = node.Next;
+            }
         }
 
         public void Insert(T data, int index)
@@ -306,45 +276,24 @@ namespace DoublyLinkedList
                 throw new Exception("Outside bounds of list");
             }
 
-            if (index == 0)
+            if(index == 0)
             {
-                this.Add(data);
-                return;
-            }
-            if (index == this.Count)
-            {
-                this.Append(data);
-                return;
+                 this.Add(data);
+                 return;
             }
 
             this.recount = true;
 
-            CustomNode<T> node;
+            var node = this.head;
 
-            if (index <= this.Count/2)
+            for (int i = 0; i < index - 1; i++)
             {
-                node = this.head;
-
-                for (int i = 0; i < index; i++)
-                {
-                    node = node.Next;
-                }
-            }
-            else
-            {
-                node = this.tail;
-
-                for (int i = this.Count - 1; i > index; i--)
-                {
-                    node = node.Prev;
-                }
+                node = node.Next;
             }
 
-            var prev = node.Prev;
-            var newNode = new CustomNode<T>(data, node, prev);
+            var newNode = new SinglyLinkedNode<T>(data, node.Next);
 
-            node.Prev = newNode;
-            prev.Next = newNode;
+            node.Next = newNode;
         }
 
         public void Remove(T data)
@@ -352,23 +301,28 @@ namespace DoublyLinkedList
             if (this.IsEmpty) return;
 
             this.recount = true;
+            
+            while(true)
+            {
+                if (this.AreEqual(head.Data, data))
+                {
+                    this.head = this.head.Next;
+                }
+                else break;
+            }
 
             var node = this.head;
 
             while(node != null)
             {
-                if (AreEqual(node.Data, data))
+                if (node.Next != null && AreEqual(node.Next.Data, data))
                 {
-                    if (node.Prev == null) this.PopHead();
-                    else if (node.Next == null) this.PopTail();
-                    else
-                    {
-                        node.Prev.Next = node.Next;
-                        node.Next.Prev = node.Prev;
-                    }
+                    node.Next = node.Next.Next;
                 }
-
-                node = node.Next;
+                else
+                {
+                    node = node.Next;
+                }
             }
         }
 
@@ -378,23 +332,25 @@ namespace DoublyLinkedList
 
             this.recount = true;
 
+            if (this.head.UID.Equals(uid))
+            {
+                this.head = this.head.Next;
+                return;
+            }
+
             var node = this.head;
 
             while(node != null)
             {
-                if (node.UID.Equals(uid))
+                var next = node.Next;
+
+                if (next.UID.Equals(uid))
                 {
-                    if (node.Prev == null) this.PopHead();
-                    else if (node.Next == null) this.PopTail();
-                    else
-                    {
-                        node.Prev.Next = node.Next;
-                        node.Next.Prev = node.Prev;
-                    }
+                    node.Next = next.Next;
                     return;
                 }
 
-                node = node.Next;
+                node = next;
             }
         }
 
@@ -409,59 +365,41 @@ namespace DoublyLinkedList
 
             if (index == 0)
             {
-                this.PopHead();
-                return;
-            }
-            else if (index == this.Count-1)
-            {
-                this.PopTail();
+                this.head = this.head.Next;
                 return;
             }
 
-            CustomNode<T> node;
+            var node = this.head;
 
-            if (index <= this.Count/2)
+            for (int i = 0; i < index; i++)
             {
-                node = this.head;
-
-                for (int i = 0; i < index; i++)
+                if (i + 1 == index)
                 {
-                    node = node.Next;
+                    node.Next = node.Next.Next;
+                    return;
                 }
-            }
-            else
-            {
-                node = this.tail;
 
-                for (int i = this.Count - 1; i > index; i--)
-                {
-                    node = node.Prev;
-                }
+                node = node.Next;
             }
-
-            node.Prev.Next = node.Next;
-            node.Next.Prev = node.Prev;
         }
 
         public void Reverse()
         {
-            if (IsEmpty) return;
+            if (this.IsEmpty) return;
 
+            SinglyLinkedNode<T> prev = null;
             var node = this.head;
+            SinglyLinkedNode<T> next = null;
 
-            while (node != null)
+            while(node != null)
             {
-                var next = node.Next;
-
-                node.Next = node.Prev;
-                node.Prev = next;
-
+                next = node.Next;
+                node.Next = prev;
+                prev = node;
                 node = next;
             }
 
-            var temp = this.head;
-            this.head = this.tail;
-            this.tail = temp;
+            this.head = prev;
         }
     }
 }

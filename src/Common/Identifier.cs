@@ -1,8 +1,8 @@
 using System;
 
-namespace DoublyLinkedList
+namespace DotNetCoreTest.Common
 {
-    public static class CustomIdentifier
+    public static class Identifier
     {
         private static long lastUID = 0;
 

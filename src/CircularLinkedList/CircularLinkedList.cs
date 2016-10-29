@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using CircularLinkedList.Interfaces;
+using DotNetCoreTest.CircularLinkedList.Interfaces;
 
-namespace CircularLinkedList
+namespace DotNetCoreTest.CircularLinkedList
 {
-    public class CustomLinkedList<T> : IEnumerable<T>, ICustomLinkedList<T>
+    public class CircularLinkedList<T> : IEnumerable<T>, ICircularLinkedList<T>
     {
-        private CustomNode<T> current;
+        private CircularLinkedNode<T> current;
 
         private bool recount;
 
@@ -96,9 +96,9 @@ namespace CircularLinkedList
             return array;
         }
 
-        public CustomNode<T>[] GetNodeArray()
+        public CircularLinkedNode<T>[] GetNodeArray()
         {
-            var array = new CustomNode<T>[this.Count];
+            var array = new CircularLinkedNode<T>[this.Count];
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -107,6 +107,20 @@ namespace CircularLinkedList
             }
 
             return array;
+        }
+        
+        public T Next()
+        {
+            this.current = this.current.Next;
+            
+            return this.current.Data;
+        }
+        
+        public T Prev()
+        {
+            this.current = this.current.Prev;
+            
+            return this.current.Data;
         }
 
         public T Pop()
@@ -132,18 +146,18 @@ namespace CircularLinkedList
         {
             this.recount = true;
 
-            CustomNode<T> node;
+            CircularLinkedNode<T> node;
 
             if (IsEmpty)
             {
-                node = new CustomNode<T>(data, null, null);
+                node = new CircularLinkedNode<T>(data, null, null);
 
                 node.Next = node;
                 node.Prev = node;
             }
             else
             {
-                node = new CustomNode<T>(data, this.current, this.current.Prev);
+                node = new CircularLinkedNode<T>(data, this.current, this.current.Prev);
 
                 this.current.Prev.Next = node;
                 this.current.Prev = node;

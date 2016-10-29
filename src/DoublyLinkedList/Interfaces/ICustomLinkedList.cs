@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace SinglyLinkedList.Interfaces
+namespace DotNetCoreTest.DoublyLinkedList.Interfaces
 {
-    public interface ICustomLinkedList<T> : IEnumerable<T>
+    public interface IDoublyLinkedList<T> : IEnumerable<T>
     {
         T this[int index] { get; set; }
 
@@ -14,11 +14,11 @@ namespace SinglyLinkedList.Interfaces
 
         T[] ToArray();
 
-        CustomNode<T>[] GetNodeArray();
+        DoublyLinkedNode<T>[] GetNodeArray();
 
         T Get(int index);
 
-        CustomNode<T> GetNode(int index);
+        DoublyLinkedNode<T> GetNode(int index);
 
         T PopHead();
 
