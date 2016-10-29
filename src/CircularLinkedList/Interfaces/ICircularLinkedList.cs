@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DotNetCoreTest.DoublyLinkedList;
 
 namespace DotNetCoreTest.CircularLinkedList.Interfaces
 {
@@ -12,7 +13,7 @@ namespace DotNetCoreTest.CircularLinkedList.Interfaces
 
         T[] ToArray();
 
-        CircularLinkedNode<T>[] GetNodeArray();
+        DoublyLinkedNode<T>[] GetNodeArray();
         
         T Next();
         
@@ -21,6 +22,8 @@ namespace DotNetCoreTest.CircularLinkedList.Interfaces
         T Pop();
 
         void Add(T data);
+
+        void Append(T data);
 
         void Remove(T data);
 

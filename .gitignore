@@ -1,4 +1,6 @@
 .vscode
 *.lock.json
+obj
+bin
 */obj
 */bin

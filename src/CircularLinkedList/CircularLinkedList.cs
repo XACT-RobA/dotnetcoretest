@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotNetCoreTest.CircularLinkedList.Interfaces;
+using DotNetCoreTest.DoublyLinkedList;
 
 namespace DotNetCoreTest.CircularLinkedList
 {
     public class CircularLinkedList<T> : IEnumerable<T>, ICircularLinkedList<T>
     {
-        private CircularLinkedNode<T> current;
+        private DoublyLinkedNode<T> current;
 
         private bool recount;
 
@@ -96,9 +97,9 @@ namespace DotNetCoreTest.CircularLinkedList
             return array;
         }
 
-        public CircularLinkedNode<T>[] GetNodeArray()
+        public DoublyLinkedNode<T>[] GetNodeArray()
         {
-            var array = new CircularLinkedNode<T>[this.Count];
+            var array = new DoublyLinkedNode<T>[this.Count];
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -146,24 +147,31 @@ namespace DotNetCoreTest.CircularLinkedList
         {
             this.recount = true;
 
-            CircularLinkedNode<T> node;
+            DoublyLinkedNode<T> node;
 
             if (IsEmpty)
             {
-                node = new CircularLinkedNode<T>(data, null, null);
+                node = new DoublyLinkedNode<T>(data, null, null);
 
                 node.Next = node;
                 node.Prev = node;
             }
             else
             {
-                node = new CircularLinkedNode<T>(data, this.current, this.current.Prev);
+                node = new DoublyLinkedNode<T>(data, this.current, this.current.Prev);
 
                 this.current.Prev.Next = node;
                 this.current.Prev = node;
             }
 
             this.current = node;
+        }
+
+        public void Append(T data)
+        {
+            this.Add(data);
+
+            this.current = this.current.Next;
         }
 
         public void Remove(T data)
