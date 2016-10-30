@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DotNetCoreTest.DoublyLinkedList;
 
-namespace DotNetCoreTest.CircularLinkedList.Interfaces
+namespace DotNetCoreTest.CircularLinkedList
 {
     public interface ICircularLinkedList<T> : IEnumerable<T>
     {
@@ -20,6 +20,8 @@ namespace DotNetCoreTest.CircularLinkedList.Interfaces
         T Prev();
 
         T Pop();
+
+        T Peek();
 
         void Add(T data);
 

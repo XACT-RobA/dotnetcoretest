@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DotNetCoreTest.DoublyLinkedList.Interfaces
+namespace DotNetCoreTest.DoublyLinkedList
 {
     public interface IDoublyLinkedList<T> : IEnumerable<T>
     {

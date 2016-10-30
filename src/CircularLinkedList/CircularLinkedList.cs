@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotNetCoreTest.CircularLinkedList.Interfaces;
 using DotNetCoreTest.DoublyLinkedList;
 
 namespace DotNetCoreTest.CircularLinkedList
@@ -141,6 +140,11 @@ namespace DotNetCoreTest.CircularLinkedList
             this.current = this.current.Next;
 
             return data;
+        }
+
+        public T Peek()
+        {
+            return this.current.Data;
         }
 
         public void Add(T data)

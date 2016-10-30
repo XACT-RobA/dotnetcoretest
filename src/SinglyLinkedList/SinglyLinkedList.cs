@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotNetCoreTest.SinglyLinkedList.Interfaces;
 
 namespace DotNetCoreTest.SinglyLinkedList
 {

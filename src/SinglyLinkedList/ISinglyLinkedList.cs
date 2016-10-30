@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DotNetCoreTest.SinglyLinkedList.Interfaces
+namespace DotNetCoreTest.SinglyLinkedList
 {
     public interface ISinglyLinkedList<T> : IEnumerable<T>
     {

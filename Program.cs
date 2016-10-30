@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using DotNetCoreTest.CircularLinkedList;
-using DotNetCoreTest.CircularLinkedList.Interfaces;
 using DotNetCoreTest.DoublyLinkedList;
-using DotNetCoreTest.DoublyLinkedList.Interfaces;
 using DotNetCoreTest.SinglyLinkedList;
-using DotNetCoreTest.SinglyLinkedList.Interfaces;
 
 namespace DotNetCoreTest
 {
