@@ -1,61 +1,110 @@
 ﻿using System;
 using Xunit;
 using DotNetCoreTest.SinglyLinkedList;
+using System.Collections.Generic;
+using Xunit.Extensions;
 
 namespace DotNetCoreTest.Tests
 {
     public class TestSinglyLinkedList
     {
+        private static ISinglyLinkedList<string> listEmpty;
+
+        private static ISinglyLinkedList<string> listOneElement;
+
+        private static ISinglyLinkedList<string> listTwoElements;
+
         private static ISinglyLinkedList<string> ListEmpty
         {
-            get { return new SinglyLinkedList<string>(); }
+            get 
+            {
+                if (listEmpty == null) listEmpty = new SinglyLinkedList<string>();
+                return listEmpty;
+            }
         }
 
         private static ISinglyLinkedList<string> ListOneElement
         {
             get
             {
-                var list = new SinglyLinkedList<string>();
-                list.Add("Rob");
-
-                return list;
+                if (listOneElement == null)
+                {
+                    listOneElement = new SinglyLinkedList<string>();
+                    listOneElement.Add("Rob");
+                }
+                return listOneElement;
             }
         }
 
-        [Fact]
-        public void TestZeroCount()
+        private static ISinglyLinkedList<string> ListTwoElements
         {
-            Assert.Equal(ListEmpty.Count, 0);
+            get
+            {
+                if (listTwoElements == null)
+                {
+                    listTwoElements = new SinglyLinkedList<string>();
+                    listTwoElements.Add("Rob");
+                    listTwoElements.Add("Alice");
+                }
+                return listTwoElements;
+            }
         }
 
-        [Fact]
-        public void TestOneCount()
+        public static IEnumerable<object[]> CountTestData
         {
-            Assert.Equal(ListOneElement.Count, 1);
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 0 },
+                    new object[] { ListOneElement, 1 },
+                    new object[] { ListTwoElements, 2 }
+                };
+            }
         }
 
-        [Fact]
-        public void TestIsEmpty()
+        public static IEnumerable<object[]> IsEmptyTestData
         {
-            Assert.True(ListEmpty.IsEmpty);
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, true },
+                    new object[] { ListOneElement, false },
+                    new object[] { ListTwoElements, false }
+                };
+            }
         }
 
-        [Fact]
-        public void TestNotIsEmpty()
+        public static IEnumerable<object[]> HasNodesTestData
         {
-            Assert.False(ListOneElement.IsEmpty);
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, false },
+                    new object[] { ListOneElement, true },
+                    new object[] { ListTwoElements, true }
+                };
+            }
         }
 
-        [Fact]
-        public void TestHasNodes()
+        [Theory, MemberData(nameof(CountTestData))]
+        public void TestCount(ISinglyLinkedList<string> list, int count)
         {
-            Assert.True(ListOneElement.HasNodes);
+            Assert.Equal(list.Count, count);
         }
 
-        [Fact]
-        public void TestNotHasNodes()
-        {            
-            Assert.False(ListEmpty.HasNodes);
+        [Theory, MemberData(nameof(IsEmptyTestData))]
+        public void TestIsEmpty(ISinglyLinkedList<string> list, bool isEmpty)
+        {
+            Assert.Equal(list.IsEmpty, isEmpty);
+        }
+
+        [Theory, MemberData(nameof(HasNodesTestData))]
+        public void TestHasNodes(ISinglyLinkedList<string> list, bool hasNodes)
+        {
+            Assert.Equal(list.HasNodes, hasNodes);
         }
     }
 }
