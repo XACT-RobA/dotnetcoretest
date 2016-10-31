@@ -2,7 +2,7 @@
 using Xunit;
 using DotNetCoreTest.SinglyLinkedList;
 
-namespace Tests
+namespace DotNetCoreTest.Tests
 {
     public class TestSinglyLinkedList
     {
