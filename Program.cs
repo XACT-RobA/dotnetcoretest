@@ -12,9 +12,9 @@ namespace DotNetCoreTest
         {
             TestSinglyLinkedList();
 
-            //TestDoublyLinkedList();
+            TestDoublyLinkedList();
 
-            //TestCircularLinkedList();
+            TestCircularLinkedList();
         }
 
         private static void TestSinglyLinkedList()
@@ -26,18 +26,15 @@ namespace DotNetCoreTest
 
             list.Add("Bob");
             list.Add("Alice");
-            //list.Add("Eve");
-            //list.Add("TestHead");
-            //list.Append("TestTail");
-            list.Add("Bob");
+            list.Add("Eve");
+            list.Add("TestHead");
+            list.Append("TestTail");
             OutputList(list);
 
-            Console.WriteLine(list.FindAll("Bob").Length);
-
-            //Console.WriteLine(list.PopHead());
-            //Console.WriteLine(list.PopTail());
-            //Console.WriteLine("");
-            //OutputList(list);
+            Console.WriteLine(list.PopHead());
+            Console.WriteLine(list.PopTail());
+            Console.WriteLine("");
+            OutputList(list);
         }
 
         private static void TestDoublyLinkedList()
