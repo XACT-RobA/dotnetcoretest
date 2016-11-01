@@ -24,18 +24,20 @@ namespace DotNetCoreTest
 
             ISinglyLinkedList<string> list = new SinglyLinkedList<string>();
 
-            list.Add("Rob");
+            list.Add("Bob");
             list.Add("Alice");
-            list.Add("Mia");
-            list.Add("Penelope");
-            list.Add("TestHead");
-            list.Append("TestTail");
+            //list.Add("Eve");
+            //list.Add("TestHead");
+            //list.Append("TestTail");
+            list.Add("Bob");
             OutputList(list);
 
-            Console.WriteLine(list.PopHead());
-            Console.WriteLine(list.PopTail());
-            Console.WriteLine("");
-            OutputList(list);
+            Console.WriteLine(list.FindAll("Bob").Length);
+
+            //Console.WriteLine(list.PopHead());
+            //Console.WriteLine(list.PopTail());
+            //Console.WriteLine("");
+            //OutputList(list);
         }
 
         private static void TestDoublyLinkedList()
@@ -45,10 +47,9 @@ namespace DotNetCoreTest
 
             IDoublyLinkedList<string> list = new DoublyLinkedList<string>();
 
-            list.Add("Rob");
+            list.Add("Bob");
             list.Add("Alice");
-            list.Add("Mia");
-            list.Add("Penelope");
+            list.Add("Eve");
             OutputList(list);
 
             list.Add("TestHead");
@@ -73,10 +74,9 @@ namespace DotNetCoreTest
 
             ICircularLinkedList<string> list = new CircularLinkedList<string>();
 
-            list.Add("Rob");
+            list.Add("Bob");
             list.Add("Alice");
-            list.Add("Mia");
-            list.Add("Penelope");
+            list.Add("Eve");
             OutputList(list);
 
             list.Add("Test");

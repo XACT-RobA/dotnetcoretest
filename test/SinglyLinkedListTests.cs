@@ -8,13 +8,12 @@ namespace DotNetCoreTest.Tests
 {
     public class TestSinglyLinkedList
     {
-
         private static ISinglyLinkedList<string> ListEmpty
         {
             get 
             {
-                var listEmpty = new SinglyLinkedList<string>();
-                return listEmpty;
+                var list = new SinglyLinkedList<string>();
+                return list;
             }
         }
 
@@ -22,9 +21,9 @@ namespace DotNetCoreTest.Tests
         {
             get
             {
-                var listOneElement = new SinglyLinkedList<string>();
-                listOneElement.Add("Rob");
-                return listOneElement;
+                var list = new SinglyLinkedList<string>();
+                list.Add("Bob");
+                return list;
             }
         }
 
@@ -32,10 +31,22 @@ namespace DotNetCoreTest.Tests
         {
             get
             {
-                var listTwoElements = new SinglyLinkedList<string>();
-                listTwoElements.Add("Rob");
-                listTwoElements.Add("Alice");
-                return listTwoElements;
+                var list = new SinglyLinkedList<string>();
+                list.Add("Bob");
+                list.Add("Alice");
+                return list;
+            }
+        }
+
+        private static ISinglyLinkedList<string> ListThreeElementsWithRepeat
+        {
+            get
+            {
+                var list = new SinglyLinkedList<string>();
+                list.Add("Bob");
+                list.Add("Alice");
+                list.Add("Bob");
+                return list;
             }
         }
 
@@ -48,6 +59,7 @@ namespace DotNetCoreTest.Tests
                     new object[] { ListEmpty, 0 },
                     new object[] { ListOneElement, 1 },
                     new object[] { ListTwoElements, 2 },
+                    new object[] { ListThreeElementsWithRepeat, 3 },
                 };
             }
         }
@@ -61,19 +73,7 @@ namespace DotNetCoreTest.Tests
                     new object[] { ListEmpty, true },
                     new object[] { ListOneElement, false },
                     new object[] { ListTwoElements, false },
-                };
-            }
-        }
-
-        public static IEnumerable<object[]> HasNodesTestData
-        {
-            get
-            {
-                return new []
-                {
-                    new object[] { ListEmpty, false },
-                    new object[] { ListOneElement, true },
-                    new object[] { ListTwoElements, true },
+                    new object[] { ListThreeElementsWithRepeat, false },
                 };
             }
         }
@@ -85,11 +85,15 @@ namespace DotNetCoreTest.Tests
                 return new []
                 {
                     new object[] { ListEmpty, 0, null, true },
-                    new object[] { ListOneElement, 0, "Rob", false },
+                    new object[] { ListOneElement, 0, "Bob", false },
                     new object[] { ListOneElement, 1, null, true },
                     new object[] { ListTwoElements, 0, "Alice", false},
-                    new object[] { ListTwoElements, 1, "Rob", false},
+                    new object[] { ListTwoElements, 1, "Bob", false},
                     new object[] { ListTwoElements, 2, null, true},
+                    new object[] { ListThreeElementsWithRepeat, 0, "Bob", false },
+                    new object[] { ListThreeElementsWithRepeat, 1, "Alice", false },
+                    new object[] { ListThreeElementsWithRepeat, 2, "Bob", false },
+                    new object[] { ListThreeElementsWithRepeat, 3, null, true },
                 };
             }
         }
@@ -101,8 +105,9 @@ namespace DotNetCoreTest.Tests
                 return new []
                 {
                     new object[] { ListEmpty, 0, new string[] {} },
-                    new object[] { ListOneElement, 1, new string[] {"Rob"} },
-                    new object[] { ListTwoElements, 2, new string[] {"Alice", "Rob"} },
+                    new object[] { ListOneElement, 1, new string[] {"Bob"} },
+                    new object[] { ListTwoElements, 2, new string[] {"Alice", "Bob"} },
+                    new object[] { ListThreeElementsWithRepeat, 3, new string[] {"Bob", "Alice", "Bob"} },
                 };
             }
         }
@@ -112,6 +117,44 @@ namespace DotNetCoreTest.Tests
             get
             {
                 return ArrayTestData;
+            }
+        }
+
+        public static IEnumerable<object[]> FindTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, -1, "Bob" },
+                    new object[] { ListOneElement, 0, "Bob" },
+                    new object[] { ListOneElement, -1, "Alice" },
+                    new object[] { ListTwoElements, 0, "Alice" },
+                    new object[] { ListTwoElements, 1, "Bob" },
+                    new object[] { ListTwoElements, -1, "Eve" },
+                    new object[] { ListThreeElementsWithRepeat, 0, "Bob" },
+                    new object[] { ListThreeElementsWithRepeat, 1, "Alice" },
+                    new object[] { ListThreeElementsWithRepeat, -1, "Eve" },
+                };
+            }
+        }
+
+        public static IEnumerable<object[]> FindAllTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, new int[0], "Bob" },
+                    new object[] { ListOneElement, new int[] {0}, "Bob" },
+                    new object[] { ListOneElement, new int[0], "Alice" },
+                    new object[] { ListTwoElements, new int[] {0}, "Alice" },
+                    new object[] { ListTwoElements, new int[] {1}, "Bob" },
+                    new object[] { ListTwoElements, new int[0], "Eve" },
+                    new object[] { ListThreeElementsWithRepeat, new int[] {0, 2}, "Bob" },
+                    new object[] { ListThreeElementsWithRepeat, new int[] {1}, "Alice" },
+                    new object[] { ListThreeElementsWithRepeat, new int[0], "Eve" },
+                };
             }
         }
 
@@ -127,10 +170,10 @@ namespace DotNetCoreTest.Tests
             Assert.Equal(list.IsEmpty, isEmpty);
         }
 
-        [Theory, MemberData(nameof(HasNodesTestData))]
-        public void TestHasNodes(ISinglyLinkedList<string> list, bool hasNodes)
+        [Theory, MemberData(nameof(IsEmptyTestData))]
+        public void TestHasNodes(ISinglyLinkedList<string> list, bool isEmpty)
         {
-            Assert.Equal(list.HasNodes, hasNodes);
+            Assert.Equal(list.HasNodes, !isEmpty);
         }
 
         [Theory, MemberData(nameof(ArrayIndexTestData))]
@@ -223,6 +266,25 @@ namespace DotNetCoreTest.Tests
 
             Exception ex = Assert.Throws<Exception>(() => list.PopTail());
             Assert.Equal(ex.Message, "List is empty");
+        }
+
+        [Theory, MemberData(nameof(FindTestData))]
+        public void TestFind(ISinglyLinkedList<string> list, int index, string value)
+        {
+            Assert.Equal(index, list.Find(value));
+        }
+
+        [Theory, MemberData(nameof(FindAllTestData))]
+        public void TestFindAll(ISinglyLinkedList<string> list, int[] indexes, string value)
+        {
+            var arr = list.FindAll(value);
+
+            Assert.Equal(arr.Length, indexes.Length);
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Assert.Equal(indexes[i], arr[i]);
+            }
         }
     }
 }
