@@ -168,7 +168,7 @@ namespace DotNetCoreTest.SinglyLinkedList
 
         public T PopHead()
         {
-            if (IsEmpty) return default(T);
+            if (IsEmpty) throw new Exception("List is empty");
 
             this.recount = true;
 
@@ -181,9 +181,16 @@ namespace DotNetCoreTest.SinglyLinkedList
 
         public T PopTail()
         {
-            if (IsEmpty) return default(T);
+            if (IsEmpty) throw new Exception("List is empty");
 
             this.recount = true;
+
+            if (this.head.Next == null)
+            {
+                var headData = this.head.Data;
+                this.head = null;
+                return headData;
+            }
 
             var node = this.head;
 
@@ -193,9 +200,7 @@ namespace DotNetCoreTest.SinglyLinkedList
             }
 
             var data = node.Next.Data;
-
             node.Next = null;
-
             return data;
         }
 

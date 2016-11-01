@@ -12,9 +12,9 @@ namespace DotNetCoreTest
         {
             TestSinglyLinkedList();
 
-            TestDoublyLinkedList();
+            //TestDoublyLinkedList();
 
-            TestCircularLinkedList();
+            //TestCircularLinkedList();
         }
 
         private static void TestSinglyLinkedList()
@@ -35,10 +35,6 @@ namespace DotNetCoreTest
             Console.WriteLine(list.PopHead());
             Console.WriteLine(list.PopTail());
             Console.WriteLine("");
-
-            OutputList(list);
-
-            list.Reverse();
             OutputList(list);
         }
 
