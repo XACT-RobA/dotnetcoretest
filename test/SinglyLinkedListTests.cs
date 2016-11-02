@@ -158,6 +158,44 @@ namespace DotNetCoreTest.Tests
             }
         }
 
+        public static IEnumerable<object[]> AddTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 1, "Eve" },
+                    new object[] { ListOneElement, 2, "Eve" },
+                    new object[] { ListTwoElements, 3, "Eve" },
+                    new object[] { ListThreeElementsWithRepeat, 4, "Eve" },
+                };
+            }
+        }
+
+        public static IEnumerable<object[]> InsertTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 1, "Eve", 0, false },
+                    new object[] { ListEmpty, 0, "Eve", 1, true },
+                    new object[] { ListOneElement, 2, "Eve", 0, false },
+                    new object[] { ListOneElement, 2, "Eve", 1, false },
+                    new object[] { ListOneElement, 1, "Eve", 2, true },
+                    new object[] { ListTwoElements, 3, "Eve", 0, false },
+                    new object[] { ListTwoElements, 3, "Eve", 1, false },
+                    new object[] { ListTwoElements, 3, "Eve", 2, false },
+                    new object[] { ListTwoElements, 2, "Eve", 3, true },
+                    new object[] { ListThreeElementsWithRepeat, 4, "Eve", 0, false },
+                    new object[] { ListThreeElementsWithRepeat, 4, "Eve", 1, false },
+                    new object[] { ListThreeElementsWithRepeat, 4, "Eve", 2, false },
+                    new object[] { ListThreeElementsWithRepeat, 4, "Eve", 3, false },
+                    new object[] { ListThreeElementsWithRepeat, 3, "Eve", 4, true },
+                };
+            }
+        }
+
         [Theory, MemberData(nameof(CountTestData))]
         public void TestCount(ISinglyLinkedList<string> list, int count)
         {
@@ -284,6 +322,48 @@ namespace DotNetCoreTest.Tests
             for (int i = 0; i < arr.Length; i++)
             {
                 Assert.Equal(indexes[i], arr[i]);
+            }
+        }
+
+        [Theory, MemberData(nameof(AddTestData))]
+        public void TestAdd(ISinglyLinkedList<string> list, int newLength, string value)
+        {
+            list.Add(value);
+
+            Assert.Equal(newLength, list.Count);
+
+            Assert.Equal(value, list[0]);
+
+            Assert.Equal(value, list.PopHead());
+        }
+
+        [Theory, MemberData(nameof(AddTestData))]
+        public void TestAppend(ISinglyLinkedList<string> list, int newLength, string value)
+        {
+            list.Append(value);
+
+            Assert.Equal(newLength, list.Count);
+
+            Assert.Equal(value, list[newLength-1]);
+
+            Assert.Equal(value, list.PopTail());
+        }
+
+        [Theory, MemberData(nameof(InsertTestData))]
+        public void TestInsert(ISinglyLinkedList<string> list, int newLength, string value, int index, bool throws)
+        {
+            if (throws)
+            {
+                Exception ex = Assert.Throws<Exception>(() => list.Insert(value, index));
+                Assert.Equal(ex.Message, "Outside bounds of list");
+            }
+            else
+            {
+                list.Insert(value, index);
+
+                Assert.Equal(newLength, list.Count);
+
+                Assert.Equal(value, list[index]);
             }
         }
     }
