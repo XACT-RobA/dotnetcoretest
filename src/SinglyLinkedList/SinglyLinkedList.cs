@@ -306,7 +306,7 @@ namespace DotNetCoreTest.SinglyLinkedList
 
             this.recount = true;
             
-            while(true)
+            while(this.head != null)
             {
                 if (this.AreEqual(head.Data, data))
                 {
@@ -336,25 +336,25 @@ namespace DotNetCoreTest.SinglyLinkedList
 
             this.recount = true;
 
-            if (this.head.UID.Equals(uid))
-            {
-                this.head = this.head.Next;
-                return;
-            }
-
             var node = this.head;
+            SinglyLinkedNode<T> prev = this.head;
 
             while(node != null)
             {
-                var next = node.Next;
-
-                if (next.UID.Equals(uid))
+                if (node.UID.Equals(uid))
                 {
-                    node.Next = next.Next;
+                    if (node == this.head)
+                    {
+                        this.head = this.head.Next;
+                        return;
+                    }
+
+                    prev.Next = node.Next;
                     return;
                 }
 
-                node = next;
+                prev = node;
+                node = node.Next;
             }
         }
 

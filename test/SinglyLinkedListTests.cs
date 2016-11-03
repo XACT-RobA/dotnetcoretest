@@ -196,6 +196,40 @@ namespace DotNetCoreTest.Tests
             }
         }
 
+        public static IEnumerable<object[]> RemoveTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 0, "Bob" },
+                    new object[] { ListOneElement, 0, "Bob" },
+                    new object[] { ListOneElement, 1, "Alice" },
+                    new object[] { ListTwoElements, 1, "Bob" },
+                    new object[] { ListTwoElements, 1, "Alice" },
+                    new object[] { ListTwoElements, 2, "Eve" },
+                    new object[] { ListThreeElementsWithRepeat, 1, "Bob" },
+                    new object[] { ListThreeElementsWithRepeat, 2, "Alice" },
+                    new object[] { ListThreeElementsWithRepeat, 3, "Eve" },
+                };
+            }
+        }
+
+        public static IEnumerable<object[]> RemoveByUIDTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListOneElement, 0, "Bob" },
+                    new object[] { ListTwoElements, 1, "Bob" },
+                    new object[] { ListTwoElements, 1, "Alice" },
+                    new object[] { ListThreeElementsWithRepeat, 2, "Bob" },
+                    new object[] { ListThreeElementsWithRepeat, 2, "Alice" },
+                };
+            }
+        }
+
         [Theory, MemberData(nameof(CountTestData))]
         public void TestCount(ISinglyLinkedList<string> list, int count)
         {
@@ -365,6 +399,33 @@ namespace DotNetCoreTest.Tests
 
                 Assert.Equal(value, list[index]);
             }
+        }
+
+        [Theory, MemberData(nameof(RemoveTestData))]
+        public void TestRemove(ISinglyLinkedList<string> list, int newLength, string value)
+        {
+            list.Remove(value);
+
+            Assert.Equal(newLength, list.Count);
+
+            foreach (var item in list)
+            {
+                Assert.NotEqual(item, value);
+            }
+        }
+
+        [Theory, MemberData(nameof(RemoveByUIDTestData))]
+        public void TestRemoveByUID(ISinglyLinkedList<string> list, int newLength, string value)
+        {
+            var uid = list.GetNode(list.Find(value)).UID;
+
+            list.RemoveByUID(uid);
+
+            Assert.Equal(newLength, list.Count);
+
+            list.RemoveByUID(uid);
+
+            Assert.Equal(newLength, list.Count);
         }
     }
 }
