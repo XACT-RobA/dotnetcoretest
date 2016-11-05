@@ -230,6 +230,40 @@ namespace DotNetCoreTest.Tests
             }
         }
 
+        public static IEnumerable<object[]> RemoveAtTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 0, 0, true },
+                    new object[] { ListOneElement, 0, 0, false },
+                    new object[] { ListOneElement, 1, 0, true },
+                    new object[] { ListTwoElements, 0, 1, false },
+                    new object[] { ListTwoElements, 1, 1, false },
+                    new object[] { ListTwoElements, 2, 0, true },
+                    new object[] { ListThreeElementsWithRepeat, 0, 2, false },
+                    new object[] { ListThreeElementsWithRepeat, 1, 2, false },
+                    new object[] { ListThreeElementsWithRepeat, 2, 2, false },
+                    new object[] { ListThreeElementsWithRepeat, 3, 0, true },
+                };
+            }
+        }
+
+        public static IEnumerable<object[]> ReverseTestData
+        {
+            get
+            {
+                return new []
+                {
+                    new object[] { ListEmpty, 0 },
+                    new object[] { ListOneElement, 1 },
+                    new object[] { ListTwoElements, 2 },
+                    new object[] { ListThreeElementsWithRepeat, 3 },
+                };
+            }
+        }
+
         [Theory, MemberData(nameof(CountTestData))]
         public void TestCount(ISinglyLinkedList<string> list, int count)
         {
@@ -426,6 +460,41 @@ namespace DotNetCoreTest.Tests
             list.RemoveByUID(uid);
 
             Assert.Equal(newLength, list.Count);
+        }
+
+        [Theory, MemberData(nameof(RemoveAtTestData))]
+        public void TestRemoveAt(ISinglyLinkedList<string> list, int index, int newLength, bool throws)
+        {
+            if (throws)
+            {
+                Exception ex = Assert.Throws<Exception>(() => list.RemoveAt(index));
+                Assert.Equal(ex.Message, "Outside bounds of list");
+            }
+            else
+            {
+                list.RemoveAt(index);
+
+                Assert.Equal(newLength, list.Count);
+            }
+        }
+
+        [Theory, MemberData(nameof(ReverseTestData))]
+        public void TestReverse(ISinglyLinkedList<string> list, int length)
+        {
+            Assert.Equal(length, list.Count);
+
+            var preNodeArray = list.GetNodeArray();
+
+            list.Reverse();
+
+            var postNodeArray = list.GetNodeArray();
+
+            Assert.Equal(preNodeArray.Length, postNodeArray.Length);
+
+            for (int i = 0; i < length; i++)
+            {
+                Assert.Equal(preNodeArray[i].UID, postNodeArray[length-(i+1)].UID);
+            }
         }
     }
 }
