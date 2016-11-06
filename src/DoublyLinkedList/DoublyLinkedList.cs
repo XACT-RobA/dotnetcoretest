@@ -46,7 +46,7 @@ namespace DotNetCoreTest.DoublyLinkedList
             return first.Equals(second);
         }
 
-        public void Recount()
+        private void Recount()
         {
             this.recount = false;
 
@@ -83,7 +83,7 @@ namespace DotNetCoreTest.DoublyLinkedList
         {
             get
             {
-                if (index >= this.Count)
+                if (index >= this.Count || index < 0)
                 {
                     throw new Exception("Outside bounds of list");
                 }
@@ -114,7 +114,7 @@ namespace DotNetCoreTest.DoublyLinkedList
 
             set
             {
-                if (index >= this.Count)
+                if (index >= this.Count || index < 0)
                 {
                     throw new Exception("Outside bounds of list");
                 }
@@ -181,7 +181,7 @@ namespace DotNetCoreTest.DoublyLinkedList
 
         public DoublyLinkedNode<T> GetNode(int index)
         {
-            if (index >= this.Count)
+            if (index >= this.Count || index < 0)
             {
                 throw new Exception("Outside bounds of list");
             }
@@ -212,7 +212,7 @@ namespace DotNetCoreTest.DoublyLinkedList
 
         public T PopHead()
         {
-            if (IsEmpty) return default(T);
+            if (IsEmpty) throw new Exception("List is empty");
 
             this.recount = true;
 
@@ -220,14 +220,21 @@ namespace DotNetCoreTest.DoublyLinkedList
 
             this.head = this.head.Next;
 
-            this.head.Prev = null;
+            if (this.head != null)
+            {
+                this.head.Prev = null;
+            }
+            else
+            {
+                this.tail = null;
+            }
 
             return node.Data;
         }
 
         public T PopTail()
         {
-            if (IsEmpty) return default(T);
+            if (IsEmpty) throw new Exception("List is empty");
 
             this.recount = true;
 
@@ -235,7 +242,14 @@ namespace DotNetCoreTest.DoublyLinkedList
 
             this.tail = this.tail.Prev;
 
-            this.tail.Next = null;
+            if (this.tail != null)
+            {
+                this.tail.Next = null;
+            }
+            else
+            {
+                this.head = null;
+            }
 
             return node.Data;
         }
