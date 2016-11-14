@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DotNetCoreTest.BinaryTree;
 using DotNetCoreTest.CircularLinkedList;
 using DotNetCoreTest.DoublyLinkedList;
 using DotNetCoreTest.SinglyLinkedList;
@@ -15,6 +16,8 @@ namespace DotNetCoreTest
             TestDoublyLinkedList();
 
             TestCircularLinkedList();
+
+            TestBinaryTree();
         }
 
         private static void TestSinglyLinkedList()
@@ -94,6 +97,23 @@ namespace DotNetCoreTest
             OutputList(list);
 
             list.Reverse();
+            OutputList(list);
+        }
+
+        private static void TestBinaryTree()
+        {
+            IBinaryTree<string> tree = new BinaryTree<string>("Top");
+
+            tree.AddLeft("Left");
+            tree.AddRight("Right");
+
+            tree.Left.AddLeft("Left left");
+            tree.Left.AddRight("Left right");
+
+            tree.Right.AddLeft("Right left");
+            tree.Right.AddRight("Right right");
+
+            var list = tree.Recurse();
             OutputList(list);
         }
 
