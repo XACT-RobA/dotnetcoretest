@@ -330,8 +330,6 @@ namespace DotNetCoreTest.DoublyLinkedList
                 return;
             }
 
-            this.recount = true;
-
             DoublyLinkedNode<T> node;
 
             if (index <= this.Count/2)
@@ -358,6 +356,8 @@ namespace DotNetCoreTest.DoublyLinkedList
 
             node.Prev = newNode;
             prev.Next = newNode;
+
+            this.recount = true;
         }
 
         public void Remove(T data)
@@ -418,8 +418,6 @@ namespace DotNetCoreTest.DoublyLinkedList
                 throw new Exception("Outside bounds of list");
             }
 
-            this.recount = true;
-
             if (index == 0)
             {
                 this.PopHead();
@@ -454,6 +452,8 @@ namespace DotNetCoreTest.DoublyLinkedList
 
             node.Prev.Next = node.Next;
             node.Next.Prev = node.Prev;
+
+            this.recount = true;
         }
 
         public void Reverse()
